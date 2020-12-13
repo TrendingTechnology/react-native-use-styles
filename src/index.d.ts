@@ -2,29 +2,31 @@ type StyleObject = {
   [key: string]: unknown;
 };
 
+type uniqueSpace = symbol | string;
+
 type Computed = (dependencies: Array<any>) => StyleObject;
-
-export function setSeparator(newSeparator: string): void;
-
-export function GlobalUse(rawStyle: string, namespace: string): Computed;
 
 type tagStyles = (strings: string[], expressions: string[]) => StyleObject;
 
+type useStyles = {
+  (): (dependencies: Array<any>) => tagStyles;
+  namespace: uniqueSpace;
+};
+
 export function useGlobalStyles(
-  nameSpace: string,
+  namespace: uniqueSpace,
   dependencies: Array<any>,
 ): tagStyles;
 
-export function GlobalStyles(definition: StyleObject, namespace: string): void;
+export function GlobalUse(rawStyle: string, namespace: uniqueSpace): Computed;
 
-type useStyles = {
-  (): (dependencies: Array<any>) => tagStyles;
-  namespace: string;
-};
+export function GlobalStyles(definition: StyleObject, namespace: uniqueSpace): void;
 
 export function Styles(
   definition: StyleObject,
-  namespace: string,
+  namespace: uniqueSpace,
 ): useStyles;
 
-export function getConstant(name: string, namespace: useStyles | string): any;
+export function getConstant(name: string, namespace: useStyles | uniqueSpace): any;
+
+export function setSeparator(newSeparator: string): void;
